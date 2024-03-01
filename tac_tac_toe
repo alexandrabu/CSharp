@@ -1,0 +1,92 @@
+using System;
+using System.Threading;
+
+namespace X_si_0
+{
+    class Program
+    {
+        static char[] tabla = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        static int jucatorCurent = 1;
+        static int alegere;
+        static int rezultatJoc = 0;
+
+        static void Main(string[] args)
+        {
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Jucatorul 1: X  |  Jucatorul 2: O");
+                Console.WriteLine("\n");
+                Console.WriteLine("Jucătorul curent: {0}", (jucatorCurent == 1) ? "1 (X)" : "2 (O)");
+                Console.WriteLine("\n");
+                AfisareTabla();
+                Console.Write("Pozitia mutarii: (1-9): ");
+                alegere = int.Parse(Console.ReadLine());
+                if (tabla[alegere] != 'X' && tabla[alegere] != 'O')
+                {
+                    char simbol = (jucatorCurent == 1) ? 'X' : 'O';
+                    tabla[alegere] = simbol;
+                    jucatorCurent = (jucatorCurent == 1) ? 2 : 1;
+                }
+                else
+                {
+                    Console.WriteLine("Ne pare rău, poziția {0} este deja marcată cu {1}", alegere, tabla[alegere]);
+                    Console.WriteLine("\n");
+                    Console.WriteLine("Așteptați 2 secunde, tabla se reîncarcă.....");
+                    Thread.Sleep(2000);
+                }
+                rezultatJoc = VerificareCastig();
+            }
+            while (rezultatJoc != 1 && rezultatJoc != -1);
+            Console.Clear();
+            AfisareTabla();
+            if (rezultatJoc == 1)
+            {
+                Console.WriteLine("Jucătorul {0} a câștigat!", (jucatorCurent == 1) ? "1 (X)" : "2 (O)");
+            }
+            else
+            {
+                Console.WriteLine("Este remiză!");
+            }
+            Console.ReadLine();
+        }
+
+        static void AfisareTabla()
+        {
+            Console.WriteLine("     |     |      ");
+            Console.WriteLine("  {0}  |  {1}  |  {2}", tabla[1], tabla[2], tabla[3]);
+            Console.WriteLine("_____|_____|_____ ");
+            Console.WriteLine("     |     |      ");
+            Console.WriteLine("  {0}  |  {1}  |  {2}", tabla[4], tabla[5], tabla[6]);
+            Console.WriteLine("_____|_____|_____ ");
+            Console.WriteLine("     |     |      ");
+            Console.WriteLine("  {0}  |  {1}  |  {2}", tabla[7], tabla[8], tabla[9]);
+            Console.WriteLine("     |     |      ");
+        }
+
+        static int VerificareCastig()
+        {
+            if ((tabla[1] == tabla[2] && tabla[2] == tabla[3]) ||
+                (tabla[4] == tabla[5] && tabla[5] == tabla[6]) ||
+                (tabla[6] == tabla[7] && tabla[7] == tabla[8]) ||
+                (tabla[1] == tabla[4] && tabla[4] == tabla[7]) ||
+                (tabla[2] == tabla[5] && tabla[5] == tabla[8]) ||
+                (tabla[3] == tabla[6] && tabla[6] == tabla[9]) ||
+                (tabla[1] == tabla[5] && tabla[5] == tabla[9]) ||
+                (tabla[3] == tabla[5] && tabla[5] == tabla[7]))
+            {
+                return 1;
+            }
+            else if (tabla[1] != '1' && tabla[2] != '2' && tabla[3] != '3' &&
+                     tabla[4] != '4' && tabla[5] != '5' && tabla[6] != '6' &&
+                     tabla[7] != '7' && tabla[8] != '8' && tabla[9] != '9')
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+}
