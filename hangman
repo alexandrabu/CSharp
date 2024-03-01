@@ -1,0 +1,108 @@
+using System;
+
+namespace JocSpanzuratoare
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] cuvinte = { "cibernetica", "alexandra", "student", "cplusplus", "matematica", "restanta", "taxa" };
+
+            Random rand = new Random();
+            string cuvantAles = cuvinte[rand.Next(0, cuvinte.Length)];
+            char[] litereCuvant = new char[cuvantAles.Length];
+
+            for (int i = 0; i < cuvantAles.Length; i++)
+            {
+                litereCuvant[i] = '_';
+            }
+
+            int incercariRamase = 6;
+            bool ghicitCuvant = false;
+
+            Console.WriteLine("Start joc");
+            Console.WriteLine("ghiceste cuvantul:");
+
+            while (!ghicitCuvant && incercariRamase > 0)
+            {
+                Console.WriteLine("Cuvantul: " + string.Join(" ", litereCuvant));
+                Console.WriteLine("Incercari ramase: " + incercariRamase);
+                Console.WriteLine(VizualizareHangman(incercariRamase));
+                Console.Write("Introdu o litera: ");
+                char literaIntrodusa = Console.ReadLine()[0];
+
+                if (cuvantAles.Contains(literaIntrodusa))
+                {
+                    Console.WriteLine("Corect!");
+                    for (int i = 0; i < cuvantAles.Length; i++)
+                    {
+                        if (cuvantAles[i] == literaIntrodusa)
+                        {
+                            litereCuvant[i] = literaIntrodusa;
+                        }
+                    }
+
+                    if (string.Join("", litereCuvant) == cuvantAles)
+                    {
+                        ghicitCuvant = true;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Gresit! incearca din nou");
+                    incercariRamase--;
+                }
+            }
+
+            if (ghicitCuvant)
+            {
+                Console.WriteLine("Ai ghicit cuvantul corect!  " + cuvantAles);
+            }
+            else
+            {
+                Console.WriteLine("Ai ramas fara incercari! Cuvantul era:  " + cuvantAles);
+                Console.WriteLine("Ai pierdut! " + VizualizareHangman(incercariRamase));
+            }
+        }
+
+        static string VizualizareHangman(int incercariRamase)
+        {
+            string[] hangman =
+            {
+                "  ____",
+                "  |  |",
+                "  |  O",
+                "  | /|\\",
+                "  |  |",
+                "  | / \\",
+                "__|______"
+            };
+
+            string vizualizare = string.Join("\n", hangman);
+
+            switch (incercariRamase)
+            {
+                case 0:
+                    break;
+                case 1:
+    vizualizare = string.Join("\n", new ArraySegment<string>(hangman, 0, 5));
+    break;
+case 2:
+    vizualizare = string.Join("\n", new ArraySegment<string>(hangman, 0, 4));
+    break;
+case 3:
+    vizualizare = string.Join("\n", new ArraySegment<string>(hangman, 0, 3));
+    break;
+case 4:
+    vizualizare = string.Join("\n", new ArraySegment<string>(hangman, 0, 2));
+    break;
+case 5:
+    vizualizare = string.Join("\n", new ArraySegment<string>(hangman, 0, 1));
+    break;
+
+            }
+
+            return vizualizare;
+        }
+    }
+}
